@@ -80,6 +80,8 @@ if (count($errors) > 0) {
 
 <!-- 戻るボタンのフォーム -->
   <form method="POST" action="discountForm.php">
+    <!-- 見えない入力に個数をせってしてPOSTをする。--->
+    <input type="hidden" name="kosu" value="<?php echo $kosu ?>">
     <ul>
       <li><input type="submit" value="戻る"></li>
     </ul>

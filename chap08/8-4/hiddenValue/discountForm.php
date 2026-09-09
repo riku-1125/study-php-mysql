@@ -7,28 +7,46 @@
   </head>
   <body>
     <div>
-<?php
-//　割引率
-$discount = 0.8;
-$off = (1 - $discount) * 100;
-if ($discount > 0) {
-    echo "<h2>このページでのご購入は{$off}%OFFとなります。！！！</h2>";
-}
-//　単価の設定
-$tanka = 2900;
-//　三桁位取り
-$tanka_fmt = number_format($tanka);
-// ?>
-<!--- 入力フォームを作る --->
+        <?php
+        require_once("../../lib/util.php");
+        //文字エンコードの検証
+        if (!cken($_POST)) {
+            $encodeing = mb_internal_encoding();
+            $err = "Encoding Error! The ecpected encodeing is" . $encodeing;
+            //エラーメッセージを出して、以下のコードを全てキャンセルする
+            exit($err);
+        }
+        //HTMLエスケープ（XSS対策）
+        $_POST = es($_POST);
+        ?>
+
+        <?php
+        if (isset($_POST['kosu'])) {
+            $kosu = $_POST['kosu'];
+        } else {
+            $kosu = "";
+        }
+        //　割引率
+        $discount = 0.8;
+        $off = (1 - $discount) * 100;
+        if ($discount > 0) {
+            echo "<h2>このページでのご購入は{$off}%OFFとなります。！！！</h2>";
+        }
+        //　単価の設定
+        $tanka = 2900;
+        //　三桁位取り
+        $tanka_fmt = number_format($tanka);
+        ?>
+<!-- 入力フォームを作る --->
       <form method="POST" action="discount.php">
         <input type="hidden" name="discount" value="<?php echo $discount; ?>">
         <input type="hidden" name="tanka" value="<?php echo $tanka; ?>">
         <ul>
           <li><label>単価：<?php echo $tanka_fmt; ?>円</label></li>
           <li><label>個数：
-            <input type="number" name="kosu">
+        <input type="number" name="kosu" value="<?php echo $kosu; ?>">
           </label></li>
-          <li><input type="submit" value="計算する"</li>
+          <li><input type="submit" value="計算する"></li>
         </ul>
       </form>
     </div>

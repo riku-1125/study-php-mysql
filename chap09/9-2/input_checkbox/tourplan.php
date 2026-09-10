@@ -22,7 +22,7 @@ $_POST = es($_POST);
 //エラーを入れる配列
 $errors = [];
 //POSTされた$maelsを取り出す
-if (isSet($_POST["meal"])) {
+if (isset($_POST["meal"])) {
     $meals = ["朝食", "夕食"];
     $diffValue = array_diff($_POST["meal"], $meals);
 
@@ -39,7 +39,7 @@ if (isSet($_POST["meal"])) {
     $mealChecked = [];
 }
 //POSTされた$toursを取り出す
-if (isSet($_POST["tour"])) {
+if (isset($_POST["tour"])) {
     $tours = ["カヌー", "MTB", "トレラン"];
     $diffValue = array_diff($_POST["tour"], $tours);
 
@@ -57,10 +57,46 @@ if (isSet($_POST["tour"])) {
 }
 
 //チェック状態にするか決める関数定義
-function checked (string $value, array $checkedVlues)
+function checked(string $value, array $checkedVlues)
 {
-    $ischecked
+    $isCheked = in_array($value, $checkedVlues);
+    if ($isCheked) {
+        //チェック状態にする
+        echo "checked";
+    }
 }
+?>
+      <form method="POST" action="<?php echo es($_SERVER['PHP_SELF']); ?>">
+        <ul>
+          <li><span>食事：</span>
+            <label><input type="checkbox" name="meal[]" value="朝食" <?php checked("朝食", $mealChecked); ?> >朝食</label>
+            <label><input type="checkbox" name="meal[]" value="夕食" <?php checked("夕食", $mealChecked); ?> >夕食</label>
+          </li>
+          <li><span>ツアー：</span>
+            <label><input type="checkbox" name="tour[]" value="カヌー" <?php checked("カヌー", $tourChecked); ?> >カヌー</label>
+            <label><input type="checkbox" name="tour[]" value="MTB" <?php checked("MTB", $tourChecked); ?> >MTB</label>
+            <label><input type="checkbox" name="tour[]" value="トレラン" <?php checked("トレラン", $tourChecked); ?> >トレラン</label>
+          </li>
+          <li><input type="submit" value="送信する"</li>
+        </ul>
+      </form>
+<?php
+//食事とツアーのどちらかが受信されていれば結果を表示する
+$isSelected = count($mealChecked) > 0 || count($tourChecked) > 0;
+if ($isSelected) {
+    echo "<HR>";
+    echo "お食事：", implode("と、", $mealChecked), "<br>";
+    echo "ツアー：", implode("と、", $tourChecked), "<br>";
+} else {
+    echo "<HR>";
+    echo "選択されてるものがありません。";
+}
+
+if (count($errors) > 0) {
+    echo "<HR>";
+    echo '<span class="error">', implode("<br>", $errors), "</span>";
+}
+?>
     </div>
   </body>
 </html>

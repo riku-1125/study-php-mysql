@@ -1,7 +1,9 @@
 
 <?php
 // カウントをリセットする。（テスト用に５分間有効）
-$result = setcookie("visitedCount", 0, time() + 60 * 5);
+$result1 = setcookie("visitedLog[counter]", "", time() - 3600);
+$result2 = setcookie("visitedLog[time]", "", time() - 3600);
+$result = $result1 && $result2;
 ?>
 
 <!DOCTYPE html>
@@ -15,10 +17,10 @@ $result = setcookie("visitedCount", 0, time() + 60 * 5);
     <div>
 <?php
 if ($result) {
-    echo "カウンタをリセットしました。", "<hr>";
+    echo "訪問ログのクッキーを破棄しました。", "<hr>";
     echo "<a href='page1.php'>Page1に戻る。</a>";
 } else {
-    echo "<a href='error'>カウンタのリセットでエラーがありました。</a>";
+    echo "<a href='error'>訪問ログの破棄でエラーがありました。</a>";
 }
 ?>
     </div>

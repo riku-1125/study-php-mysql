@@ -1,0 +1,33 @@
+<?php
+require_once("../../lib/util.php");
+?>
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>クッキーを確認する</title>
+    <link href="../../css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div>
+<?php
+// クッキーの値を取り出す
+if (isset($_COOKIE["gamedata"])) {
+    $dataQueryString = $_COOKIE["gamedata"];
+    // クエリ文字列から連想配列に戻す。
+    parse_str($dataQueryString, $gamedata);
+    $gamedata = es($gamedata);
+    // この連想配列の値を列挙する
+    foreach ($gamedata as $key => $value) {
+        echo "{$key}：{$value}", "<br>";
+    }
+    echo "<hr>";
+} else {
+        echo "クッキーはありません。", "<hr>";
+}
+?>
+
+    </div>
+  </body>
+</html>
